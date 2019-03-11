@@ -1,21 +1,40 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="helpers.js"></script>
+    <script src="main.js"></script>
     <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>title</title>
-  </head>
-  <body>
-  
-  <script type="text/javascript">
-   function main()
-   {
-    
-   }
-   if (window.addEventListener) window.addEventListener("load", main, false);
-   else if (window.attachEvent) window.attachEvent("onload", main);
-   else window.onload = main;
-  </script>
-  </body>
+    <style>
+       .collection a.collection-item{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="collection" id="registers">
+
+</div>
+<div class="row">
+    <form class="col s12">
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea id="code" class="materialize-textarea"></textarea>
+                <label for="code">Textarea</label>
+            </div>
+        </div>
+    </form>
+</div>
+<a class="waves-effect waves-light btn" onclick="run(document.getElementById('code').value)"><i class="material-icons left">play_arrow</i>Run</a>
+<script type="text/javascript">
+</script>
+</body>
 </html>
 
