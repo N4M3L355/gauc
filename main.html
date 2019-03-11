@@ -15,15 +15,12 @@
 </head>
 <body>
 
-<div class="collection" id="registers">
-
-</div>
 <div class="row">
     <form class="col s12">
         <div class="row">
             <div class="input-field col s12">
                 <textarea id="code" class="materialize-textarea"></textarea>
-                <label for="code">Textarea</label>
+                <label for="code">Code</label>
             </div>
         </div>
     </form>
@@ -31,6 +28,11 @@
 <a class="waves-effect waves-light btn" id="runButton"><i class="material-icons left">play_arrow</i>Run</a>
 <a class="waves-effect waves-light btn" id="debugButton" ><i class="material-icons left">bug_report</i>Debug</a>
 <a class="hidden waves-effect waves-light btn" id="stepButton" ><i class="material-icons left">keyboard_return</i>Step forward</a>
+<br>
+<br>
+<br>
+<div class="collection" id="registers"></div>
+<div class="queue card-panel">Queue: <span class=" teal-text" id="queue"></span></div>
 <script type="text/javascript">
 </script>
 </body>

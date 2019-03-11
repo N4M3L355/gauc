@@ -1,7 +1,16 @@
 
-.collection a.collection-item{
+.collection-item{
     display: inline-block;
 }
 .hidden{
     display: none;
+}
+#code{
+    font-family: monospace;
+}
+.registerValue{
+    width: 6em;
+}
+.register{
+    min-width: 12.5%;
 }
