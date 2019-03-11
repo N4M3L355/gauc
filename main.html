@@ -11,11 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>title</title>
-    <style>
-       .collection a.collection-item{
-            display: inline-block;
-        }
-    </style>
+    <link href="./style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -32,7 +28,9 @@
         </div>
     </form>
 </div>
-<a class="waves-effect waves-light btn" onclick="run(document.getElementById('code').value)"><i class="material-icons left">play_arrow</i>Run</a>
+<a class="waves-effect waves-light btn" id="runButton"><i class="material-icons left">play_arrow</i>Run</a>
+<a class="waves-effect waves-light btn" id="debugButton" ><i class="material-icons left">bug_report</i>Debug</a>
+<a class="hidden waves-effect waves-light btn" id="stepButton" ><i class="material-icons left">keyboard_return</i>Step forward</a>
 <script type="text/javascript">
 </script>
 </body>

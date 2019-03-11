@@ -30,11 +30,41 @@ class Register {
     }
 }
 
-const numberOfRegisters = 15;
-let registers;
 
+class DebugState {
+    constructor(commands, line) {
+        this.commands = commands;
+        this.line = line;
+        this.currentLine = () => this.commands[this.line];
+    }
+
+}
+show = (element,show) => show?element.classList.add("hidden"):element.classList.remove("hidden");
+const numberOfRegisters = 15;
+let registers, queue, debugState;
+let startDebug = () => debugStartHelper(document.getElementById('code').value);
+let stopDebug = () => debugStopHelper();
+
+debugStartHelper = (rawInput) => {
+    show(document.getElementById("stepButton"),false);
+    document.getElementById("debugButton").innerHTML = "<i class=\"material-icons left\">stop</i>Stop Debugging";
+    document.getElementById("debugButton").addEventListener("click",stopDebug);
+    document.getElementById("debugButton").removeEventListener("click",startDebug);
+
+     debugState = new DebugState(rawInput.split(String.fromCharCode(10)).map(x => x.trim()),0);
+};
+
+debugStopHelper = () => {
+    show(document.getElementById("stepButton"),true);
+    document.getElementById("debugButton").innerHTML = "<i class=\"material-icons left\">bug_report</i>Debug";
+    document.getElementById("debugButton").addEventListener("click",startDebug);
+    document.getElementById("debugButton").removeEventListener("click",stopDebug);
+};
 
 function postLoad() {
+    document.getElementById("stepButton").addEventListener("click", () => step(debugState));
+    document.getElementById("runButton").addEventListener("click",() => run(document.getElementById('code').value));
+    document.getElementById("debugButton").addEventListener("click",startDebug);
     registers = Array(numberOfRegisters).fill(0).map((x, i) => new Register(i));
 }
 

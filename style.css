@@ -1,0 +1,7 @@
+
+.collection a.collection-item{
+    display: inline-block;
+}
+.hidden{
+    display: none;
+}
