@@ -9,12 +9,12 @@ const int16checker = value => value > 0 && value < 2 ** 16 && value % 1 === 0;
 
 class Register {
 
-    constructor(number, value = undefined) {
+    constructor(number, value = 0) {
         this._number = number;
         this._value = value;
         this.checkValue = int16checker;
         this._element = htmlToElement(`
-            <div class="collection-item register">${this._number}. register: 
+            <div class="collection-item register">${String.fromCharCode(number+97)}:
                 <span id="register${this._number}" class="registerValue new badge teal lighten-5 teal-text" data-badge-caption="">${this._value}</span>
             </div>
         `);
@@ -38,6 +38,16 @@ class DebugState {
     constructor(commands, line) {
         this.commands = commands;
         this.line = line;
+        this.currentLine = () => this.commands[this.line];
+    }
+
+}
+
+class ProgramState {
+    constructor(commands, line) {
+        this.commands = commands;
+        this.line = line;
+        this.executedCount = 0;
         this.currentLine = () => this.commands[this.line];
     }
 
