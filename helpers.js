@@ -40,6 +40,15 @@ class ProgramState {
         this.line = line;
         this.executedCount = 0;
         this.currentLine = () => this.commands[this.line];
+        
+        this.labels = [];
+        
+        for(var i=0; i<commands.length; ++i)
+            if(commands[i].startsWith("label"))
+            {
+                var label_name = commands[i].substring(6);
+                this.labels[label_name] = i;
+            }
     }
 
 }
