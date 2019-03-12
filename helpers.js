@@ -5,7 +5,7 @@ function htmlToElement(html) {
     return template.content.firstChild;
 }
 
-const int16checker = value => value > 0 && value < 2 ** 16 && value % 1 === 0;
+const int16checker = value => value >= 0 && value < 2 ** 16 && value % 1 === 0;
 
 class Register {
 
@@ -89,7 +89,7 @@ class Queue {
 }
 
 show = (element, show) => show ? element.classList.add("hidden") : element.classList.remove("hidden");
-const numberOfRegisters = 15;
+const numberOfRegisters = 26;
 let registers, queue, debugState;
 let startDebug = () => debugStartHelper(document.getElementById('code').value);
 let stopDebug = () => debugStopHelper();
