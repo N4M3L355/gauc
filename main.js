@@ -1,4 +1,4 @@
-handle = undefined
+let handle;
 
 make_step = (programState) => {
     
@@ -24,7 +24,7 @@ run = (rawInput, programState) => {
 
 };
 
-step = (debugState) =>{
-    console.log(`currently on line ${debugState.line}: ${debugState.currentLine()}`);
-    debugState.line++;
+step = (programState) =>{
+    console.log(`currently on line ${programState.line}: ${programState.currentLine()}`);
+    programState.line++;
 };

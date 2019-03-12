@@ -1,6 +1,6 @@
 function htmlToElement(html) {
     var template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
+    html = html.trim();
     template.innerHTML = html;
     return template.content.firstChild;
 }
@@ -33,15 +33,6 @@ class Register {
     }
 }
 
-
-class DebugState {
-    constructor(commands, line) {
-        this.commands = commands;
-        this.line = line;
-        this.currentLine = () => this.commands[this.line];
-    }
-
-}
 
 class ProgramState {
     constructor(commands, line) {
@@ -101,7 +92,7 @@ debugStartHelper = (rawInput) => {
     document.getElementById("debugButton").classList.add('red');
     document.getElementById("debugButton").removeEventListener("click", startDebug);
 
-    debugState = new DebugState(rawInput.split(String.fromCharCode(10)).map(x => x.trim()), 0);
+    debugState = new ProgramState(rawInput.split(String.fromCharCode(10)).map(x => x.trim()), 0);
 };
 
 debugStopHelper = () => {
