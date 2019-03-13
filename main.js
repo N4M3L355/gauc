@@ -13,14 +13,12 @@ make_step = (programState) => {
     if( current_command.startsWith("get") )
     {
         var reg = current_command.charCodeAt(4) - 97;
-        registers[reg].value = queue.peek();
-        queue.dequeue();
+        registers[reg].value = queue.dequeue();
     }
     
     if( current_command.startsWith("print") )
     {
-        console.log("Vypisujem " + queue.peek() + "\n");
-        queue.dequeue();
+        console.log("Vypisujem " + queue.dequeue() + "\n");
     }
     
     if( current_command.startsWith("put") )
@@ -35,42 +33,16 @@ make_step = (programState) => {
         else queue.enqueue( x%65536 );
     }
     
-    if( current_command.startsWith("add") )
-    {
-        var a = queue.peek();
-        queue.dequeue();
-        var b = queue.peek();
-        queue.dequeue();
-        
-        queue.enqueue( (a+b)%65536 );
-    }
+    if( current_command.startsWith("add") ) queue.enqueue((queue.dequeue() + queue.dequeue()) % 65536);
     
-    if( current_command.startsWith("sub") )
-    {
-        var a = queue.peek();
-        queue.dequeue();
-        var b = queue.peek();
-        queue.dequeue();
-        
-        queue.enqueue( (a-b+65536)%65536 );
-    }
+    if( current_command.startsWith("sub") ) queue.enqueue((queue.dequeue()-queue.dequeue()+65536)%65536 );
     
-    if( current_command.startsWith("mul") )
-    {
-        var a = queue.peek();
-        queue.dequeue();
-        var b = queue.peek();
-        queue.dequeue();
-        
-        queue.enqueue( (a*b)%65536 );
-    }
+    if( current_command.startsWith("mul") ) queue.enqueue((queue.dequeue() * queue.dequeue()) % 65536);
     
     if( current_command.startsWith("div") )
     {
-        var a = queue.peek();
-        queue.dequeue();
-        var b = queue.peek();
-        queue.dequeue();
+        var a = queue.dequeue();
+        var b = queue.dequeue();
         
         if(b == 0)
         {
@@ -82,12 +54,10 @@ make_step = (programState) => {
     
     if( current_command.startsWith("mod") )
     {
-        var a = queue.peek();
-        queue.dequeue();
-        var b = queue.peek();
-        queue.dequeue();
+        var a = queue.dequeue();
+        var b = queue.dequeue();
         
-        if(b == 0)
+        if(b === 0)
         {
             programState.line = programState.commands.length;
             return;
