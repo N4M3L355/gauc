@@ -1,6 +1,9 @@
 let handle;
-
-make_step = (programState) => {
+let out = (where => (...what) => {
+    where.innerHTML = what;
+    return what;
+});
+make_step = () => {
     
     if(programState.executedCount > 10000 || programState.line >= programState.commands.length)
     {
@@ -18,7 +21,7 @@ make_step = (programState) => {
     
     if( current_command.startsWith("print") )
     {
-        console.log("Vypisujem " + queue.dequeue() + "\n");
+        out(document.getElementById("output"))(queue.dequeue());
     }
     
     if( current_command.startsWith("put") )
@@ -117,15 +120,19 @@ make_step = (programState) => {
     programState.executedCount++;
     programState.line++;
 };
-
-run = (rawInput, programState) => {
-
-    programState = new ProgramState(rawInput.replace(/;/g, String.fromCharCode(10)).split(String.fromCharCode(10)).map(x => x.trim()), 0);
-    handle = setInterval(make_step, 10, programState);
-
+createStateFromRawCode = (rawInput) =>{
+    return new ProgramState(rawInput.replace(/;/g, String.fromCharCode(10)).split(String.fromCharCode(10)).map(x => x.trim()), 0);
+};
+run = () => {
+    handle = setInterval(make_step, executionInterval, programState);
+};
+stop = () => {
+    clearInterval(handle);
+    programState = undefined;
 };
 
 step = (programState) =>{
     console.log(`currently on line ${programState.line}: ${programState.currentLine()}`);
+    make_step();
     programState.line++;
 };

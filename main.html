@@ -15,6 +15,35 @@
 </head>
 <body>
 
+<div style="position: absolute; top: 0; right: 0; text-align: right ">
+
+    <a class="waves-effect waves-light btn" id="slowerButton">
+        <i class="material-icons">
+            fast_rewind
+        </i>
+    </a>
+    <a class="waves-effect waves-light btn" id="runButton">
+        <i class="material-icons">
+            play_arrow
+        </i>
+    </a>
+    <a class="waves-effect waves-light btn" id="fasterButton">
+        <i class="material-icons ">
+            fast_forward
+        </i>
+    </a>
+    <a class="waves-effect waves-light btn" id="stepButton">
+        <i class="material-icons left">
+            keyboard_return
+        </i>
+        Step forward
+    </a>
+    <a class="waves-effect waves-light btn disabled" id="stopButton">
+        <i class="material-icons">
+            stop
+        </i>
+    </a>
+</div>
 <div class="row">
     <form class="col s12">
         <div class="row">
@@ -25,14 +54,10 @@
         </div>
     </form>
 </div>
-<a class="waves-effect waves-light btn" id="runButton"><i class="material-icons left">play_arrow</i>Run</a>
-<a class="waves-effect waves-light btn" id="debugButton" ><i class="material-icons left">bug_report</i>Debug</a>
-<a class="hidden waves-effect waves-light btn" id="stepButton" ><i class="material-icons left">keyboard_return</i>Step forward</a>
-<br>
-<br>
-<br>
 <div class="collection" id="registers"></div>
 <div class="queue card-panel">Queue: <span class=" teal-text" id="queue"></span></div>
+<div class="output card-panel">Output: <h2 class=" teal-text" id="output"></h2></div>
+
 <script type="text/javascript">
 </script>
 </body>
