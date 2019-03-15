@@ -15,7 +15,7 @@ class Register {
         this.checkValue = int16checker;
         this._element = htmlToElement(`
             <div class="collection-item register">${String.fromCharCode(number+97)}:
-                <span id="register${this._number}" class="registerValue new badge teal lighten-5 teal-text" data-badge-caption="">${this._value}</span>
+                <span id="register${this._number}" class="registerValue new badge light-blue lighten-5 light-blue-text" data-badge-caption="">${this._value}</span>
             </div>
         `);
         document.getElementById('registers').appendChild(this._element);
@@ -43,10 +43,10 @@ class ProgramState {
         
         this.labels = [];
         
-        for(var i=0; i<commands.length; ++i)
+        for(let i=0; i<commands.length; ++i)
             if(commands[i].startsWith("label"))
             {
-                var label_name = commands[i].substring(6);
+                let label_name = commands[i].substring(6);
                 this.labels[label_name] = i;
             }
     }
@@ -58,7 +58,8 @@ class Queue {
         this._queue = [];
         this._offset = 0;
         this.checkValue = int16checker;
-        this.enqueue = item => {
+        document.getElementById('queue').innerHTML = "";
+            this.enqueue = item => {
             if (this.checkValue(item)) {
                 item = this._queue.push(item);
                 document.getElementById('queue').innerHTML = this._queue.slice(this._offset).join(' ');
@@ -93,28 +94,93 @@ display = (element, shown=true) => shown ? element.classList.remove("hidden") : 
 const numberOfRegisters = 26;
 let executionInterval = 10;
 let registers, queue, programState;
-let startDebug = () => debugStartHelper(document.getElementById('code').value);
-let stopDebug = () => debugStopHelper();
 
-let runStartHelper = (rawInput) => {
-    console.log("run was called");
-    document.getElementById("runButton").innerHTML = "<i class=\"material-icons left\">stop</i>Pause";
-    display(document.getElementById("slowerButton"));
-    display(document.getElementById("pauseButton"));
-    display(document.getElementById("fasterButton"));
-    document.getElementById("stepButton").classList.add('disabled');
-    programState = programState||createStateFromRawCode(rawInput);
-    run();
+createStateFromRawCode = (rawInput) =>{
+    return new ProgramState(rawInput.replace(/;/g, String.fromCharCode(10)).split(String.fromCharCode(10)).map(x => x.trim()), 0);
 };
-
+clearRegisters = () => registers.forEach(x => x.value = 0);
+clearQueue = () => queue = new Queue();
 function postLoad() {
-    document.getElementById("stepButton").addEventListener("click", () => step(debugState));
-    document.getElementById("runButton").addEventListener("click", () => runStartHelper(document.getElementById('code').value));
-    document.getElementById("fasterButton").addEventListener("click", () => executionInterval/=1.5);
-    document.getElementById("slowerButton").addEventListener("click", () => executionInterval*=1.5);
+    document.getElementById("stepButton").addEventListener("click", stepListener);
+    document.getElementById("runButton").addEventListener("click", runListener);
+    document.getElementById("stopButton").addEventListener("click", stopListener);
+    document.getElementById("fasterButton").addEventListener("click", fasterListener);
+    document.getElementById("slowerButton").addEventListener("click", slowerListener);
     registers = Array(numberOfRegisters).fill(0).map((x, i) => new Register(i));
     queue = new Queue();
 }
+
+let runListener = () => {
+    document.getElementById("runButton").innerHTML = "<i class=\"material-icons\">pause</i>";
+    document.getElementById("runButton").removeEventListener("click", runListener);
+    document.getElementById("runButton").addEventListener("click", pauseListener);
+    if(!programState){
+        document.getElementById("stopButton").classList.remove("disabled");
+        clearQueue();
+        clearRegisters();
+        changeCodeTextToLines();
+        programState = createStateFromRawCode(document.getElementById('code').value);
+    }
+    start();
+};
+let pauseListener = () => {
+    document.getElementById("runButton").innerHTML = "<i class=\"material-icons\">play_arrow</i>";
+    document.getElementById("runButton").addEventListener("click", runListener);
+    document.getElementById("runButton").removeEventListener("click", pauseListener);
+    pause();
+};
+stopListener = () => {
+    document.getElementById("stopButton").classList.add("disabled");
+    stop();
+};
+resetUIAfterEndOfProgramEvaluationTheLongestMethodNameInThisProject = () =>{
+    changeCodeLinesToText();
+    document.getElementById("stopButton").classList.add("disabled");
+    document.getElementById("runButton").innerHTML = "<i class=\"material-icons\">play_arrow</i>";
+    document.getElementById("runButton").addEventListener("click", runListener);
+    document.getElementById("runButton").removeEventListener("click", pauseListener);
+};
+let fasterListener = () => {
+    executionInterval /= 1.3;
+    if(handle) {
+        pause();
+        start();
+    }
+};
+let slowerListener = () => {
+    executionInterval *= 1.3;
+    if(handle) {
+        pause();
+        start();
+    }
+};
+let stepListener = () => {
+    if(!programState){
+        document.getElementById("stopButton").classList.remove("disabled");
+        clearQueue();
+        clearRegisters();
+        changeCodeTextToLines();
+        programState = createStateFromRawCode(document.getElementById('code').value);
+    }
+    step();
+};
+let changeCodeTextToLines = () => {
+    let elements = document.getElementById('code').value
+        .replace(/;/g, ";~")
+        .split(String.fromCharCode(10)).join("<br class='codeLineBreaker'>"+"~")
+        .split("~")
+        .map(x => x)
+        .map((x,i) => document.getElementById('codeLines')
+            .appendChild(htmlToElement(`<span id="codeLine${i}" class="codeLine">${x}</span>`)));
+
+    document.getElementById('code').classList.add('hidden');
+    document.getElementById('codeLines').classList.remove('hidden');
+};
+let changeCodeLinesToText = () => {
+    [...document.getElementsByClassName('codeLine')].forEach(x => x.parentElement.removeChild(x));
+    document.getElementById('code').classList.remove('hidden');
+    document.getElementById('codeLines').classList.add('hidden');
+};
 
 if (window.addEventListener) window.addEventListener("load", postLoad, false);
 else if (window.attachEvent) window.attachEvent("onload", postLoad);

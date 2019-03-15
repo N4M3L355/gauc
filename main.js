@@ -1,16 +1,21 @@
 let handle;
+let lastLineNumber;
 let out = (where => (...what) => {
     where.innerHTML = what;
     return what;
 });
 make_step = () => {
-    
     if(programState.executedCount > 10000 || programState.line >= programState.commands.length)
     {
-        clearInterval(handle);
+        stop();
         return;
     }
-    
+
+    document.getElementById(`codeLine${programState.line}`).classList.add('orange-text');
+    if(lastLineNumber!==undefined){
+        document.getElementById(`codeLine${lastLineNumber}`).classList.remove('orange-text');
+    }
+    lastLineNumber = programState.line;
     var current_command = programState.currentLine();
     
     if( current_command.startsWith("get") )
@@ -110,7 +115,7 @@ make_step = () => {
     
     if( current_command.startsWith("jempty") )
     {
-        if(queue.peek() == undefined)
+        if(queue.peek() === undefined)
         {
             var label_name = current_command.substr(7);
             programState.line = programState.labels[label_name];
@@ -120,19 +125,19 @@ make_step = () => {
     programState.executedCount++;
     programState.line++;
 };
-createStateFromRawCode = (rawInput) =>{
-    return new ProgramState(rawInput.replace(/;/g, String.fromCharCode(10)).split(String.fromCharCode(10)).map(x => x.trim()), 0);
-};
-run = () => {
-    handle = setInterval(make_step, executionInterval, programState);
-};
+
+start = () => handle = setInterval(make_step, executionInterval);
+pause = () => clearInterval(handle);
 stop = () => {
     clearInterval(handle);
+    if(lastLineNumber!==undefined&&lastLineNumber<programState.commands.length){
+        document.getElementById(`codeLine${lastLineNumber}`).classList.remove('orange-text');
+    }
     programState = undefined;
+    resetUIAfterEndOfProgramEvaluationTheLongestMethodNameInThisProject();
 };
 
-step = (programState) =>{
-    console.log(`currently on line ${programState.line}: ${programState.currentLine()}`);
+
+step = () =>{
     make_step();
-    programState.line++;
 };

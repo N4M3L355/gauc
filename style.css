@@ -5,12 +5,22 @@
 .hidden{
     display: none;
 }
-#code{
+#code, .codeLine{
+    font-size: 16px;
     font-family: monospace;
+    color: black;
+}
+#code{
+    line-height: 1.5;
 }
 .registerValue{
     width: 6em;
 }
 .register{
     min-width: 7.6923%;
+}
+#codeLines{
+    padding: .8rem 0 calc(.8rem - 1px) 0;
+    margin: 0 0 calc(8px + 0.15vw) 0px;
+    border-bottom: 1px solid #9e9e9e;
 }
