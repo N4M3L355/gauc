@@ -127,9 +127,13 @@ make_step = () => {
 };
 
 start = () => handle = setInterval(make_step, executionInterval);
-pause = () => clearInterval(handle);
+pause = () => {
+    clearInterval(handle);
+    handle = undefined;
+};
 stop = () => {
     clearInterval(handle);
+    handle = undefined;
     if(lastLineNumber!==undefined&&lastLineNumber<programState.commands.length){
         document.getElementById(`codeLine${lastLineNumber}`).classList.remove('orange-text');
     }
