@@ -1,7 +1,7 @@
 let handle;
 let lastLineNumber;
 let out = (where => (...what) => {
-    where.innerHTML = what;
+    where.innerHTML = where.innerHTML + what + '<br>';
     return what;
 });
 make_step = () => {
