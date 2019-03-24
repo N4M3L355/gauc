@@ -129,6 +129,7 @@ make_step = () => {
 start = () => {
     lastLineNumber = 0;
     handle = setInterval(make_step, executionInterval);
+    document.getElementById("output").innerHTML = "";
 };
 pause = () => {
     clearInterval(handle);
