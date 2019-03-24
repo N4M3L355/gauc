@@ -161,6 +161,7 @@ let stepListener = () => {
         clearQueue();
         clearRegisters();
         changeCodeTextToLines();
+        document.getElementById("output").innerHTML = "";
         programState = createStateFromRawCode(document.getElementById('code').value);
     }
     step();
