@@ -126,7 +126,10 @@ make_step = () => {
     programState.line++;
 };
 
-start = () => handle = setInterval(make_step, executionInterval);
+start = () => {
+    lastLineNumber = 0;
+    handle = setInterval(make_step, executionInterval);
+};
 pause = () => {
     clearInterval(handle);
     handle = undefined;
