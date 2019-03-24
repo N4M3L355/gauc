@@ -119,6 +119,7 @@ let runListener = () => {
         clearQueue();
         clearRegisters();
         changeCodeTextToLines();
+        document.getElementById("output").innerHTML = "";
         programState = createStateFromRawCode(document.getElementById('code').value);
     }
     start();
