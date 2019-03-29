@@ -57,7 +57,7 @@ make_step = () => {
             programState.line = programState.commands.length;
             return;
         }
-        queue.enqueue( (a/b)%65536 );
+        queue.enqueue( Math.floor(a/b)%65536 );
     }
     
     if( current_command.startsWith("mod") )
