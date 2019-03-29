@@ -122,6 +122,12 @@ make_step = () => {
         }
     }
     
+    if( current_command.startsWith("stop") )
+    {
+        stop();
+        return;
+    }
+
     programState.executedCount++;
     programState.line++;
 };
