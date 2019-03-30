@@ -17,20 +17,24 @@ make_step = () => {
     }
     lastLineNumber = programState.line;
     var current_command = programState.currentLine();
+    var parsed = false;
     
     if( current_command.startsWith("get") )
     {
+        parsed = true;
         var reg = current_command.charCodeAt(4) - 97;
         registers[reg].value = queue.dequeue();
     }
     
     if( current_command.startsWith("print") )
     {
+        parsed = true;
         out(document.getElementById("output"))(queue.dequeue());
     }
     
     if( current_command.startsWith("put") )
     {
+        parsed = true;
         var x = parseInt(current_command.substr(4));
 
         if( isNaN(x) )
@@ -41,14 +45,24 @@ make_step = () => {
         else queue.enqueue( x%65536 );
     }
     
-    if( current_command.startsWith("add") ) queue.enqueue((queue.dequeue() + queue.dequeue()) % 65536);
-    
-    if( current_command.startsWith("sub") ) queue.enqueue((queue.dequeue()-queue.dequeue()+65536)%65536 );
-    
-    if( current_command.startsWith("mul") ) queue.enqueue((queue.dequeue() * queue.dequeue()) % 65536);
-    
+    if( current_command.startsWith("add") )
+    {
+        parsed = true;
+        queue.enqueue((queue.dequeue() + queue.dequeue()) % 65536);
+    }
+    if( current_command.startsWith("sub") )
+    {
+        parsed = true;
+        queue.enqueue((queue.dequeue()-queue.dequeue()+65536)%65536 );
+    }
+    if( current_command.startsWith("mul") )
+    {
+        parsed = true;
+        queue.enqueue((queue.dequeue() * queue.dequeue()) % 65536);
+    }
     if( current_command.startsWith("div") )
     {
+        parsed = true;
         var a = queue.dequeue();
         var b = queue.dequeue();
         
@@ -62,6 +76,7 @@ make_step = () => {
     
     if( current_command.startsWith("mod") )
     {
+        parsed = true;
         var a = queue.dequeue();
         var b = queue.dequeue();
         
@@ -75,12 +90,14 @@ make_step = () => {
     
     if( current_command.startsWith("jump") )
     {
+        parsed = true;
         var label_name = current_command.substr(5);
-        programState.line = programState.labels[label_name];
+        programState.line = programState.getLabelLine(label_name);
     }
     
     if( current_command.startsWith("jz") )
     {
+        parsed = true;
         var reg = current_command.charCodeAt(3) - 97;
         if(registers[reg].value == 0)
         {
@@ -91,6 +108,7 @@ make_step = () => {
     
     if( current_command.startsWith("jeq") )
     {
+        parsed = true;
         var reg1 = current_command.charCodeAt(4) - 97;
         var reg2 = current_command.charCodeAt(6) - 97;
         
@@ -103,6 +121,7 @@ make_step = () => {
     
     if( current_command.startsWith("jgt") )
     {
+        parsed = true;
         var reg1 = current_command.charCodeAt(4) - 97;
         var reg2 = current_command.charCodeAt(6) - 97;
         
@@ -115,6 +134,7 @@ make_step = () => {
     
     if( current_command.startsWith("jempty") )
     {
+        parsed = true;
         if(queue.peek() === undefined)
         {
             var label_name = current_command.substr(7);
@@ -124,10 +144,18 @@ make_step = () => {
     
     if( current_command.startsWith("stop") )
     {
+        parsed = true;
         stop();
         return;
     }
 
+    if(parsed == false && current_command != "")
+    {
+        alert("Nerozpoznany prikaz.");
+        stop();
+        return;
+    }
+    
     programState.executedCount++;
     programState.line++;
 };

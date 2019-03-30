@@ -49,8 +49,16 @@ class ProgramState {
                 let label_name = commands[i].substring(6);
                 this.labels[label_name] = i;
             }
-    }
 
+        this.getLabelLine = (label_name) => {
+            if(label_name in this.labels) return this.labels[label_name];
+            else
+            {
+                alert("Navestie s neexistujucim nazvom.");
+                return this.commands.length-1;
+            }
+        };
+    }
 }
 
 class Queue {
