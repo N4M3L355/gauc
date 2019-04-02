@@ -149,6 +149,11 @@ make_step = () => {
         return;
     }
 
+    if( current_command.startsWith("label") )
+    {
+        parsed = true;
+    }
+
     if(parsed == false && current_command != "")
     {
         alert("Nerozpoznany prikaz.");
